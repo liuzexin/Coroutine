@@ -6,14 +6,15 @@
  * Time: 9:39
  * @param server
  */
-
+namespace ga\coroutine\app;
+use ga\coroutine\log\Logger;
 class CoroutineApp{
 
     private $server;
 
     public function __construct()
     {
-        $this->server = new CoroutineServer();
+        $this->server = new Logger();
     }
 
     public function run(){
@@ -22,15 +23,21 @@ class CoroutineApp{
     }
 
     public function actionTest(){
-        $coroutineServer = new CoroutineServer();
+        $coroutineServer = new Logger();
         foreach($coroutineServer->range(1, 10) as $num){
             echo $num . PHP_EOL;
         }
     }
 
     public function actionLog(){
-        $log = $this->server->write();
-        $log->send('123123');
-        $log->send('12312asd');
+        $this->server->fileName = WEB_ROOT_DIR . '/test';
+        $log = $this->server->readX();
+        var_dump($log->send(2));
+        var_dump($log->send(3));
+        var_dump($log->send("error"));
+    }
+
+    public function error(){
+
     }
 }
